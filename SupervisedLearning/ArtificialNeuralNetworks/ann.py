@@ -45,22 +45,33 @@ X_test = sc.transform(X_test)
 
 # Importing the Keras libraries and packages
 import keras
-from keras.models import Sequential
-from keras.layers import Dense
+# There are two types of NN - sequential and graph. 
+from keras.models import Sequential # We are using sequntial model to create NN, other being graph
+from keras.layers import Dense # Used to add layers to NN
 
 # Initialising the ANN
-classifier = Sequential()
+classifier = Sequential() # Sequence of layers
 
 # Adding the input layer and the first hidden layer
+# Dense - Adds a fully connected layer(each node is connected to each node)
+# units - the number of nodes in the hidden layer. The number of units is taken as average of input nodes and output nodes
+# kernel_initializer - how should the weights of the layer be initialized. 'uniform' means that the weights are initialized close to zero. uniform also makes sure the weights are initialized according to uniform distribution
+# activation - the activation function which should be used in the nodes of ll. Activation function sets what value will go to the next layer. relu means rectifier linear function
+# input_dim - the layers takes input of dimension 11(this is the number of features present in the dataset
 classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu', input_dim = 11))
 
 # Adding the second hidden layer
 classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu'))
 
 # Adding the output layer
+# Since the output is going to be binary in nature, the activation function is sigmoid which will give either 0 or 1. Only 1 output node 
 classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'sigmoid'))
 
 # Compiling the ANN
+# Now that the layers are added, the ann is compiles.
+# optimizer - the algo to use to find the optimum weights. 'adam' is an implemetation stochastic gradient algorithm
+# loss - the loss function to use. 'binary_crossentropy' is a logarithmic loss function
+# metrics - what should be the parameter for deciding if the model is good or not. Criteria to evaluate the model 
 classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
 
 # Fitting the ANN to the Training set
