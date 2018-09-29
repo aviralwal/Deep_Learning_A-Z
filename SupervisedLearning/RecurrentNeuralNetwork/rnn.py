@@ -34,16 +34,24 @@ X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))
 # Part 2 - Building the RNN
 
 # Importing the Keras libraries and packages
-from keras.models import Sequential
-from keras.layers import Dense
-from keras.layers import LSTM
-from keras.layers import Dropout
+from keras.models import Sequential # creating a sequentail nn
+from keras.layers import Dense # Creating fully connected nodes
+from keras.layers import LSTM # Add LSTM layers 
+from keras.layers import Dropout # Add dropout regularizations
+# Pytorch is better to create  RNN
+
+# In this model, the output is not discrete but continuous
 
 # Initialising the RNN
 regressor = Sequential()
 
 # Adding the first LSTM layer and some Dropout regularisation
+# LSTM layer is added unsing LSTM layer
+# units - number of LSTM cells or memory units in the layer. Higher the number, higher the dimensions and then it can do more better prediction and capture flow better
+# return_sequence - true when there is LSTM layer after the current one. False when there is no more LSTM layer
+# input_shape - shape of the input 
 regressor.add(LSTM(units = 50, return_sequences = True, input_shape = (X_train.shape[1], 1)))
+# Dropout helps in prevcventing overfitting
 regressor.add(Dropout(0.2))
 
 # Adding a second LSTM layer and some Dropout regularisation
@@ -62,9 +70,14 @@ regressor.add(Dropout(0.2))
 regressor.add(Dense(units = 1))
 
 # Compiling the RNN
+# optimizer - safe choice. Stochastic gradient descent
+# loss - the loss function to use to calculate the weights in gradient descent. 'mean_square_error' is the mean square error method to calculate loss during training
 regressor.compile(optimizer = 'adam', loss = 'mean_squared_error')
 
 # Fitting the RNN to the Training set
+# Training the RNN using the training data
+# epochs - the number of times the network will run on the input data to train itself
+# batch_size - the number of training objects present in each epoch. The weights will be updated after 32 observations
 regressor.fit(X_train, y_train, epochs = 100, batch_size = 32)
 
 
